@@ -8,7 +8,7 @@ const Header = () => {
     const loggedInUser = session?.user?.email.split("@")[0] || null
 
     return (
-        <nav className="navbar navbar-expand-lg shadow-md py-2 bg-white relative flex items-center w-full justify-between">
+        <nav className="navbar navbar-expand-lg shadow-md py-2 bg-white relative flex items-center w-screen justify-between">
         <div className="px-6 w-full flex flex-wrap items-center justify-between">
            
             <div className="navbar-collapse collapse grow items-center" id="navbarSupportedContentY">
@@ -50,21 +50,12 @@ const Header = () => {
                     className="nav-link block pr-2 lg:px-2 py-2 text-gray-600 hover:text-gray-700 focus:text-gray-700 transition duration-150 ease-in-out"  
                     data-mdb-ripple="true" 
                     data-mdb-ripple-color="light">
-                        My Posts
+                        My Quizzes
                     </a>
                 </Link>
                 </li>
                 ) : null}
-                <li className="nav-item mb-2 lg:mb-0">
-                <Link href="/feed">
-                    <a 
-                    className="nav-link block pr-2 lg:px-2 py-2 text-gray-600 hover:text-gray-700 focus:text-gray-700 transition duration-150 ease-in-out"  
-                    data-mdb-ripple="true" 
-                    data-mdb-ripple-color="light">
-                        The Feed
-                    </a>
-                </Link>
-                </li>
+                
                 { loggedInUser && loggedInUser.indexOf("admin") > -1 ? (
                     <li className="nav-item mb-2 lg:mb-0">
                     <Link href="/admin">
