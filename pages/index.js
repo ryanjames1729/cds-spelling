@@ -35,6 +35,7 @@ export default function Home(props) {
       <main className={styles.main}>
         <h1 className={styles.title}>
           {data ? data.quizzes[0].quizName : 'Sorry, waiting for the words.'}
+          <br/>
           Welcome to <span className="text-blue-600">Spelling with CDS</span>
         </h1>
 
