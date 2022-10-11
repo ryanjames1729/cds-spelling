@@ -1,10 +1,10 @@
 import { useSession } from "next-auth/react"
 // import PostsForm from "../components/PostsForm"
-import Header from "../components/header"
+import Header from "../components/Header"
 // import Meta from "../components/meta"
 import { useRouter } from 'next/router'
 import { deleteComment } from '../services'
-import EachPost from "../components/eachPost"
+import EachQuiz from "../components/EachQuiz"
 import useSWR from 'swr'
 
 
@@ -48,7 +48,7 @@ export default function Quiz(props) {
                 <div className="flex flex-col items-center justify-center">
                 {quizzes.map(quiz => (
                     loggedInUser == quiz.userName ? (
-                        <EachPost key={quiz.id} post={quiz} />
+                        <EachQuiz key={quiz.id} quiz={quiz} />
                     ) : null
                 ))} 
                 </div>
