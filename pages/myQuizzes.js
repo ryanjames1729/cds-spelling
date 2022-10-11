@@ -44,8 +44,9 @@ export default function Quiz(props) {
             {/* {session ? <PostsForm session={session} />  : null} */}
 
             <div className="container px-2">
-
+                
                 <div className="flex flex-col items-center justify-center">
+                <h2 className="text-6xl">Welcome {quizzes[0].userName}!</h2>
                 {quizzes.map(quiz => (
                     loggedInUser == quiz.userName ? (
                         <EachQuiz key={quiz.id} quiz={quiz} />
