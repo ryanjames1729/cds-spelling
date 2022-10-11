@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react"
 // import PostsForm from "../components/PostsForm"
-import Header from "./header"
+
 // import Meta from "../components/meta"
 import { useRouter } from 'next/router'
 import { deleteComment } from '../services'
