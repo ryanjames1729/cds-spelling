@@ -22,3 +22,15 @@ export const submitWords = async (obj) => {
 
     return result.json();
   };
+
+  export const deleteQuiz= async (obj) => {
+    const result = await fetch(`${server}/api/deleteQuiz`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(obj),
+    });
+  
+    return result.json();
+  };

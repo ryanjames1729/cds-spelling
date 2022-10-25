@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react"
 
 // import Meta from "../components/meta"
 import { useRouter } from 'next/router'
-import { deleteComment } from '../services'
+import { deleteQuiz } from '../services'
 import Link from 'next/link'
 import { server } from '../services'
 
@@ -20,12 +20,13 @@ const EachQuiz = ({ quiz }) => {
     
         
         const userName = quiz.userName;
+        const slug = quiz.slug;
 
     
-        const commentObject = { body, userName }
+        const quizObject = { slug, userName }
 
-        console.log(commentObject)
-        deleteComment(commentObject)
+        console.log(quizObject)
+        deleteQuiz(quizObject)
             .then((res) => {
                 // setShowSuccessMessage(true);
                 router.replace(router.asPath)
@@ -49,14 +50,15 @@ const EachQuiz = ({ quiz }) => {
                     <div className="flex items-center">
                     <div className="text-sm">
                         <p className="text-gray-900 leading-none">
+                            points: {quiz.points} <br/>
                             <Link href="/[slug]" as={`${server}/${quiz.slug}`}><a className="hover:underline">{server}/{quiz.slug}</a></Link>
                         </p>
                         <div className="grid grid-cols-3 content-end">
                             <div></div>
                             <div></div>
-                            {quiz.documentInStages && quiz.documentInStages.length > 0 ? (
+                            
                                 <button type="button" onClick={handleSubmit} className="w-18 p-2 rounded-lg bg-red-600 hover:bg-red-800 hover:underline">Delete this quiz</button>
-                            ): null}
+                           
                         </div>
                     </div>
                     </div>

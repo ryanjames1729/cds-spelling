@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react"
 // import PostsForm from "../components/PostsForm"
 import Header from "../components/Header"
+import WordsForm from "../components/WordsForm"
 // import Meta from "../components/meta"
 import { useRouter } from 'next/router'
 import { deleteComment } from '../services'
@@ -26,7 +27,7 @@ export default function Quiz(props) {
     const loggedInUser = session?.user?.email.split("@")[0] || null
 
     const fetcher = (...args) => fetch(...args).then(res => res.json())
-    const { data }= useSWR('/api', fetcher, {fallbackData: props, refreshInterval: 30000})
+    const { data }= useSWR('/api', fetcher, {fallbackData: props, refreshInterval: 1000})
     let quizzes = data.quizzes
     
     // const router = useRouter()
@@ -40,6 +41,8 @@ export default function Quiz(props) {
         <>
             {/* <Meta /> */}
             <Header />
+
+            <WordsForm />
             
             {/* {session ? <PostsForm session={session} />  : null} */}
 

@@ -1,34 +1,88 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import Link from 'next/link'
-import styles from '../styles/Home.module.css'
+import styles from '../../styles/Home.module.css'
 
 import React from 'react'
 
 import { gql, GraphQLClient } from 'graphql-request';
 import { useSpeechSynthesis } from 'react-speech-kit';
+
 import useSWR from 'swr'
 
 
-
-export async function getStaticProps() {
-  const { getQuizzes } = require("../lib/helpers")
+export const getStaticProps = async (context) => {
+  const { getQuizzes, getQuizBySlug } = require("../../lib/helpers")
   return {
-    props: (await getQuizzes()), revalidate: 1
+    props: (await getQuizBySlug(context.params.slug)), revalidate: 1
   }
+
+    // const hygraph = new GraphQLClient(process.env.HYGRAPH_ENDPOINT)
+
+    // const { wordLists } = await hygraph.request(`
+    // {
+    //     wordLists (where: {slug: "${context.params.slug}"}) {
+    //         id
+    //         slug
+    //         userName
+    //         words
+    //       }
+    // }`)
+
+    // return {
+    //     props: {
+    //         wordLists
+    //     }
+    // }
+}
+
+export const getStaticPaths = async () => {
+    const hygraph = new GraphQLClient(process.env.HYGRAPH_ENDPOINT)
+
+    const { quizzes } = await hygraph.request(`
+        {
+            quizzes {
+                slug
+            }
+        }
+    `)
+
+    const paths = quizzes.map(item => ({
+        params: {
+            slug: item.slug,
+        }
+    }));
+
+    return {
+        paths,
+        fallback: false,
+    };
 }
 
 export default function Quiz(props) {
 
-  const fetcher = (...args) => fetch(...args).then(res => res.json())
-  const { data }= useSWR('/api', fetcher, {fallbackData: props, refreshInterval: 3000})
+  const data = props
 
   const wordArray = data ? data.quizzes[0].wordList.split(';') : 'Sorry, waiting for the words.';
+  for(let i = 0; i < wordArray.length; i++) {
+    wordArray[i] = wordArray[i].trim();
+    if(wordArray[i].length === 0) {
+        wordArray.splice(i, 1);
+        i--;
+    }
+  }
+
+  for(let j = wordArray.length - 1; j > 0; j--) {
+    const k = Math.floor(Math.random() * (j + 1));
+    [wordArray[j], wordArray[k]] = [wordArray[k], wordArray[j]];
+  }
   const [word, setWord] = React.useState(wordArray[0]);
   const { speak } = useSpeechSynthesis();
   const [index, setIndex] = React.useState(0);
   const [guessedWord, setGuessedWord] = React.useState('');
   const [score, setScore] = React.useState(0);
+
+  const [pitch, setPitch] = React.useState(1);
+  const [rate, setRate] = React.useState(1);
 
   console.log(wordArray);
 
@@ -42,7 +96,6 @@ export default function Quiz(props) {
       </Head>
 
       <main className={styles.main}>
-        <h3>{wordArray}</h3>
         <h1 className={styles.title}>
           Time to <span className="text-blue-600">Spell!</span>
         </h1>
@@ -51,7 +104,8 @@ export default function Quiz(props) {
           {/* <code>{wordLists[0].words}</code> */}
           <div className="p-2">
             <button onClick={() => {
-                    speak({ text: word });
+                // setWord(wordArray[index]);
+                    speak({ text: word, rate, pitch });
 
                 }}
                 className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"}
@@ -74,9 +128,12 @@ export default function Quiz(props) {
             <button
               className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"}
               onClick={() => {
+                console.log(index)
                 if (guessedWord.trim() == word.trim()) {
                   setScore(score + 10);
                   alert("Correct!\n\nYour score is: " + (score+10));
+                  // incremement score in data base
+                  let newScore = data.quizzes[0].points + 10;
                   const newIndex = index + 1 <= wordArray.length - 1 ? index + 1 : 0;
                   setIndex(newIndex);
                   setWord(wordArray[newIndex]);
@@ -84,6 +141,7 @@ export default function Quiz(props) {
                 } else {
                   alert("Incorrect!\n\nYour score is: " + score);
                 }
+                console.log(index)
               }}
             >
               Check Answer
@@ -96,7 +154,44 @@ export default function Quiz(props) {
               setWord(wordArray[newIndex]);
             }}
             >Next Word</button>
+
           </div>
+
+
+          <div>
+              <div>
+                <label htmlFor="rate">Rate: </label>
+                <div>{rate}</div>
+              </div>
+              <input
+                type="range"
+                min="0.5"
+                max="2"
+                defaultValue="1"
+                step="0.1"
+                id="rate"
+                onChange={(event) => {
+                  setRate(event.target.value);
+                }}
+              />
+            </div>
+            <div>
+              <div>
+                <label htmlFor="pitch">Pitch: </label>
+                <div className="pitch-value">{pitch}</div>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="2"
+                defaultValue="1"
+                step="0.1"
+                id="pitch"
+                onChange={(event) => {
+                  setPitch(event.target.value);
+                }}
+              />
+            </div>
           
         </div>
       </main>
