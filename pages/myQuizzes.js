@@ -1,16 +1,15 @@
-import { useSession } from "next-auth/react"
+
 // import PostsForm from "../components/PostsForm"
 import Header from "../components/Header"
 import WordsForm from "../components/WordsForm"
-// import Meta from "../components/meta"
+import Meta from "../components/Meta"
 import { useRouter } from 'next/router'
 import { deleteComment } from '../services'
 import EachQuiz from "../components/EachQuiz"
 import useSWR from 'swr'
 
-
-
-import { gql, GraphQLClient } from 'graphql-request';
+import { useSession, signIn, signOut } from 'next-auth/react'
+import Link from 'next/link'    
 
 
 export async function getStaticProps() {
@@ -39,15 +38,11 @@ export default function Quiz(props) {
 
     return (
         <>
-            {/* <Meta /> */}
+            <Meta title={"My Quizzes"} />
             <Header />
-
-            <WordsForm />
-            
-            {/* {session ? <PostsForm session={session} />  : null} */}
-
-            <div className="container px-2">
-                
+            {session ? <>
+                <WordsForm />
+                <div className="container px-2">
                 <div className="flex flex-col items-center justify-center">
                 <h2 className="text-6xl">Welcome {quizzes[0].userName}!</h2>
                 {quizzes.map(quiz => (
@@ -56,12 +51,27 @@ export default function Quiz(props) {
                     ) : null
                 ))} 
                 </div>
-
-
             </div>
+            </> : <>
+                <div className="container px-2">
+                    <div className="flex flex-col items-center justify-center">
+                        <h2 className="text-3xl">So sorry, but you need to login first.</h2>
+                        <Link href="#"><a
+                            onClick={
+                                () => {
+                                    if (session) {
+                                        signOut()
+                                    } else {
+                                        signIn('google')
+                                    }
+                                    return false;
+                                }
+                            }
+                        >Log Me In</a></Link>
+                    </div>
+                </div>        
+            </>}
             
-            
-       
         </>
     )
 }
