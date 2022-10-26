@@ -5,7 +5,8 @@ import { useSession } from "next-auth/react"
 import { useRouter } from 'next/router'
 import { deleteQuiz } from '../services'
 import Link from 'next/link'
-import { server } from '../services'
+import { server, updatePoints } from '../services'
+
 
 const EachQuiz = ({ quiz }) => {
     const { data: session } = useSession()
@@ -14,7 +15,7 @@ const EachQuiz = ({ quiz }) => {
 
     console.log(quiz)
 
-    const handleSubmit = () => {
+    const handleDelete = () => {
         // setError(false);
         console.log("Button clicked")
     
@@ -36,6 +37,18 @@ const EachQuiz = ({ quiz }) => {
         })
     }
 
+    const handleReset = () => {
+        // incremement score in data base
+        let points = 0;
+        let id = quiz.id;
+        const pointsObject = { points, id };
+        updatePoints(pointsObject)
+            .then((res) => {
+                return;
+            })
+        
+    }
+
     return (
         <div key={quiz.id} className="w-1/2 lg:flex py-6">
                 <div className="pt-10 border-l border-gray-400 border-t border-b h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
@@ -54,11 +67,9 @@ const EachQuiz = ({ quiz }) => {
                             <Link href="/[slug]" as={`${server}/${quiz.slug}`}><a className="hover:underline">{server}/{quiz.slug}</a></Link>
                         </p>
                         <div className="grid grid-cols-3 content-end">
+                            <button type="button" onClick={handleDelete} className="w-18 p-2 rounded-lg bg-red-600 hover:bg-red-800 hover:underline">Delete this quiz</button>
                             <div></div>
-                            <div></div>
-                            
-                                <button type="button" onClick={handleSubmit} className="w-18 p-2 rounded-lg bg-red-600 hover:bg-red-800 hover:underline">Delete this quiz</button>
-                           
+                            <button type="button" onClick={handleReset} className="w-18 p-2 rounded-lg bg-red-600 hover:bg-red-800 hover:underline">Reset quiz points</button>
                         </div>
                     </div>
                     </div>

@@ -7,6 +7,8 @@ import React from 'react'
 import { gql, GraphQLClient } from 'graphql-request';
 import { useSpeechSynthesis } from 'react-speech-kit';
 
+import { updatePoints } from '../../services'
+
 import useSWR from 'swr'
 
 
@@ -133,7 +135,15 @@ export default function Quiz(props) {
                   setScore(score + 10);
                   alert("Correct!\n\nYour score is: " + (score+10));
                   // incremement score in data base
-                  let newScore = data.quizzes[0].points + 10;
+                  let points = data.quizzes[0].points + score;
+                  let id = data.quizzes[0].id;
+                  const pointsObject = { points, id };
+                  updatePoints(pointsObject)
+                      .then((res) => {
+                          return;
+                      })
+
+
                   const newIndex = index + 1 <= wordArray.length - 1 ? index + 1 : 0;
                   setIndex(newIndex);
                   setWord(wordArray[newIndex]);
