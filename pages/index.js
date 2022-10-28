@@ -12,6 +12,8 @@ import Header from '../components/Header'
 import Meta from '../components/Meta'
 import useSWR from 'swr'
 
+import { useSession, signIn, signOut } from 'next-auth/react'
+
 export async function getStaticProps() {
   const { getQuizzes } = require("../lib/helpers")
   return {
@@ -23,6 +25,19 @@ export default function Home(props) {
 
   const fetcher = (...args) => fetch(...args).then(res => res.json())
   const { data }= useSWR('/api', fetcher, {fallbackData: props, refreshInterval: 3000})
+
+  const { session } = useSession();
+  const loggedInUser = session?.user?.email.split("@")[0] || null
+
+  if (loggedInUser) {
+    return {
+      redirect: {
+        destination: '/myQuizzes', // some destination '/dashboard' Ex,
+        permanent: false,
+      },
+    }
+  } else {
+  
   return (
     <>
       <Meta title={"Home"} />
@@ -32,7 +47,19 @@ export default function Home(props) {
           Welcome to <span className="text-pink-600">Spelling with CDS</span>
         </h1>
 
-        <div class="max-w-7xl mx-auto mt-12 hover:cursor-pointer">
+        <Link href="#">
+        <div class="max-w-7xl mx-auto mt-12 hover:cursor-pointer"
+          onClick={
+            () => {
+                if (session) {
+                    signOut()
+                } else {
+                    signIn('google', { callbackUrl: '/myQuizzes' })
+                }
+                return false;
+            }
+        }  
+        >
           <div class="relative group">
             <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
               <div class="relative px-7 py-6 bg-white ring-1 ring-gray-900/5 rounded-lg leading-none flex items-top justify-start space-x-6">
@@ -42,6 +69,7 @@ export default function Home(props) {
               </div>
              </div>
           </div>
+          </Link>
 
       </main>
 
@@ -56,4 +84,5 @@ export default function Home(props) {
       </footer> */}
     </>
   )
+}
 }

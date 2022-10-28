@@ -28,9 +28,9 @@ const Header = () => {
                     onClick={
                         () => {
                             if (session) {
-                                signOut()
+                                signOut({ callbackUrl: '/' })
                             } else {
-                                signIn('google')
+                                signIn('google', { callbackUrl: '/myQuizzes' })
                             }
                             return false;
                         }
@@ -38,7 +38,7 @@ const Header = () => {
                     className="nav-link block pr-2 lg:px-2 py-2 text-gray-600 hover:text-gray-700 focus:text-gray-700 transition duration-150 ease-in-out"  
                     data-mdb-ripple="true" 
                     data-mdb-ripple-color="light">
-                        { session ? loggedInUser : "Login" }
+                        { session ? "Logout" : "Login" }
                     </a>
                 </Link>
                 </li>

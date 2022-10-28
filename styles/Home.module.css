@@ -109,6 +109,17 @@
   margin-left: 0.5rem;
 }
 
+.quiz {
+  min-height: 100vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(#f53844, #42378f);
+}
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;

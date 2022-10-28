@@ -7,6 +7,9 @@ import { useRouter } from 'next/router'
 import { deleteComment } from '../services'
 import EachQuiz from "../components/EachQuiz"
 import useSWR from 'swr'
+import { useState } from 'react'
+
+import styles from '../styles/Home.module.css'  
 
 import { useSession, signIn, signOut } from 'next-auth/react'
 import Link from 'next/link'    
@@ -24,10 +27,16 @@ export default function Quiz(props) {
     
     const { data: session } = useSession()
     const loggedInUser = session?.user?.email.split("@")[0] || null
+    let displayName = null
+    if (session) {
+        displayName = loggedInUser[0].toUpperCase() + ". " + loggedInUser[1].toUpperCase() + loggedInUser.slice(2)
+    }
 
     const fetcher = (...args) => fetch(...args).then(res => res.json())
     const { data }= useSWR('/api', fetcher, {fallbackData: props, refreshInterval: 1000})
     let quizzes = data.quizzes
+
+    const [form, changeForm] = useState(false)
     
     // const router = useRouter()
     
@@ -40,19 +49,25 @@ export default function Quiz(props) {
         <>
             <Meta title={"My Quizzes"} />
             <Header />
-            {session ? <>
-                <WordsForm />
+            {session ? 
+            <main className={styles.main}>
                 <div className="container px-2">
-                <div className="flex flex-col items-center justify-center">
-                <h2 className="text-6xl">Welcome {quizzes[0].userName}!</h2>
-                {quizzes.map(quiz => (
-                    loggedInUser == quiz.userName ? (
-                        <EachQuiz key={quiz.id} quiz={quiz} />
-                    ) : null
-                ))} 
+                    <div className="flex flex-col items-center justify-center">
+                        <h2 className="text-6xl">Welcome {displayName}!</h2>
+                        <button onClick={() => {
+                            changeForm(!form)
+                        }}
+                        className="w-18 p-2 rounded-lg bg-green-600 hover:bg-green-800 hover:underline"
+                        >{form ? "Hide Form" : "Create a New Quiz"}</button>
+                        <div className={form ? "block" : "hidden"}><WordsForm /></div>
+                        {quizzes.map(quiz => (
+                            loggedInUser == quiz.userName ? (
+                            <EachQuiz key={quiz.id} quiz={quiz} />
+                            ) : null
+                    ))} 
                 </div>
             </div>
-            </> : <>
+            </main> : <>
                 <div className="container px-2">
                     <div className="flex flex-col items-center justify-center">
                         <h2 className="text-3xl">So sorry, but you need to login first.</h2>

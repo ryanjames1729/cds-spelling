@@ -16,7 +16,7 @@ const WordsForm = () => {
         const { value: quizName } = quizNameValue.current;
         const { value: userName } = userNameValue.current;
 
-        if (!words || !quizName || !userName) {
+        if (!wordList || !quizName || !userName) {
             alert('Please fill out all fields');
             return;
         }
@@ -33,12 +33,22 @@ const WordsForm = () => {
             alert('Please use only letters and numbers - no spaces or special characters');
             return;
         }
+
+ 
+        if (!wordList.includes(';')) {
+            console.log('no semi-colons')
+            if (wordList.includes(',')) {
+                wordList = wordList.replace(/,/g, ';');
+            } else if (wordList.includes(' ')) {
+                wordList = wordList.replace(/ /g, ';');
+            }
+        }
         
 
         const slug = userName + "-" + quizName;
 
         const wordListObject = { userName, quizName, slug, wordList };
-        console.log('wordListObject' + wordListObject);
+        console.log('wordList ' + wordList);
 
         submitWords(wordListObject)
             .then((res) => {
@@ -53,18 +63,6 @@ const WordsForm = () => {
 
     return ( 
         <div className="p-4 rounded-lg shadow-lg border-black">
-            
-            <div className="grid grid-cols-1 gap-4 mb-12">
-            <label for="words"><h1 className="text-3xl">Enter your word list, separated by a semicolon.</h1></label>
-                <input ref={wordValue} className="p-4 outline-none w-full rounded-lg focus:ring-2 focus:ring-gray-200 bg-slate-300 dark:bg-gray-200 dark:text-black" 
-                placeholder="aback; bacon; cabal; daddy; eager; etc."
-                name="words"
-                id="words"
-                required
-                minLength="1"
-            />
-            </div>
-
             
             <div className="grid grid-cols-1 gap-4 mb-12">
             <label for="name"><h1 className="text-3xl">Your user name:</h1></label>
@@ -93,6 +91,19 @@ const WordsForm = () => {
                         maxlength="25"
                     />
                 </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 mb-12">
+            <label for="words"><h1 className="text-3xl">Enter your word list, separated by a semicolon.</h1></label>
+                <input ref={wordValue} className="p-4 outline-none w-full rounded-lg focus:ring-2 focus:ring-gray-200 bg-slate-300 dark:bg-gray-200 dark:text-black" 
+                placeholder="aback; bacon; cabal; daddy; eager; etc."
+                name="words"
+                id="words"
+                required
+                minLength="1"
+            />
+          
+
                 <div className="grid grid-cols-1 gap-4 mb-4">
 
                 </div>

@@ -50,28 +50,26 @@ const EachQuiz = ({ quiz }) => {
     }
 
     return (
-        <div key={quiz.id} className="w-1/2 lg:flex py-6">
-                <div className="pt-10 border-l border-gray-400 border-t border-b h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden">
-                    <h2 className="text-8xl">{quiz.quizName.substring(0,2).toUpperCase()}</h2>
+        <div key={quiz.id} className="w-2/3 py-6">
+            <div className="border-r border-b border-l border-gray-400 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                <div className="mb-8 w-96">
+                    <div className="text-gray-900 text-xl mb-2">Quiz Name: <span className="font-bold">{quiz.quizName}</span></div>
+                    <p className="text-gray-700 text-base">Word List: <span className="font-bold">{quiz.wordList}</span></p>
                 </div>
-                <div className="border-r border-b border-l border-gray-400 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
-                    <div className="mb-8 w-96">
-                    
-                    <div className="text-gray-900 font-bold text-xl mb-2">{quiz.quizName}</div>
-                    <p className="text-gray-700 text-base">{quiz.wordList}</p>
-                    </div>
-                    <div className="flex items-center">
-                    <div className="text-sm">
+                <div className="grid grid-rows-2">
+                    <div className="text-sm grid grid-cols-3 content-end">
                         <p className="text-gray-900 leading-none">
-                            points: {quiz.points} <br/>
-                            <Link href="/[slug]" as={`${server}/${quiz.slug}`}><a className="hover:underline">{server}/{quiz.slug}</a></Link>
+                            Class XP: {quiz.points}
                         </p>
-                        <div className="grid grid-cols-3 content-end">
-                            <button type="button" onClick={handleDelete} className="w-18 p-2 rounded-lg bg-red-600 hover:bg-red-800 hover:underline">Delete this quiz</button>
-                            <div></div>
-                            <button type="button" onClick={handleReset} className="w-18 p-2 rounded-lg bg-red-600 hover:bg-red-800 hover:underline">Reset quiz points</button>
-                        </div>
+                        <div></div>
+                        <Link href="/[slug]" as={`${server}/${quiz.slug}`}><a className="text-gray-900 hover:underline">{server}/{quiz.slug}</a></Link>
                     </div>
+                    <div className="grid grid-cols-3 content-end">
+                        <button type="button" onClick={handleReset} className="w-18 p-2 rounded-lg bg-red-600 hover:bg-red-800 hover:underline">Reset quiz points</button>
+                        <div></div>
+                        <button type="button" onClick={handleDelete} className="w-18 p-2 rounded-lg bg-red-600 hover:bg-red-800 hover:underline">Delete this quiz</button>  
+                    </div>
+                    
                     </div>
                 </div>
                     
