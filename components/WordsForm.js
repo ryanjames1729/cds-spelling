@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react'
 import { submitWords, server } from '../services'
-import { useSession, signIn, signOut } from 'next-auth/react'
 
-const WordsForm = () => {
+
+const WordsForm = ( {loggedInUser} ) => {
     const [error, setError] = useState(false)
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
@@ -13,15 +13,13 @@ const WordsForm = () => {
     const handleSubmit = () => {
         setError(false);
 
-        const { data: session } = useSession()
-        const loggedInUser = session?.user?.email.split("@")[0] || null
-
         const { value: wordList } = wordValue.current;
         const { value: quizName } = quizNameValue.current;
-        const { value: userName } = loggedInUser;
+        const userName = loggedInUser;
 
         if (!wordList || !quizName || !userName) {
             alert('Please fill out all fields');
+            console.log(wordList + " " + quizName + " " + userName);
             return;
         }
         const exp = /[^a-zA-Z0-9]/

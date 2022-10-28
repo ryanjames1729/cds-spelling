@@ -59,7 +59,7 @@ export default function Quiz(props) {
                         }}
                         className="w-18 p-2 rounded-lg bg-green-600 hover:bg-green-800 hover:underline"
                         >{form ? "Hide Form" : "Create a New Quiz"}</button>
-                        <div className={form ? "block" : "hidden"}><WordsForm /></div>
+                        <div className={form ? "block" : "hidden"}><WordsForm loggedInUser={loggedInUser}/></div>
                         {quizzes.map(quiz => (
                             loggedInUser == quiz.userName ? (
                             <EachQuiz key={quiz.id} quiz={quiz} />
