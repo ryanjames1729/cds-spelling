@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { submitWords, server } from '../services'
+import { useSession, signIn, signOut } from 'next-auth/react'
 
 const WordsForm = () => {
     const [error, setError] = useState(false)
@@ -12,9 +13,12 @@ const WordsForm = () => {
     const handleSubmit = () => {
         setError(false);
 
+        const { data: session } = useSession()
+        const loggedInUser = session?.user?.email.split("@")[0] || null
+
         const { value: wordList } = wordValue.current;
         const { value: quizName } = quizNameValue.current;
-        const { value: userName } = userNameValue.current;
+        const { value: userName } = loggedInUser;
 
         if (!wordList || !quizName || !userName) {
             alert('Please fill out all fields');
@@ -64,7 +68,7 @@ const WordsForm = () => {
     return ( 
         <div className="p-4 rounded-lg shadow-lg border-black">
             
-            <div className="grid grid-cols-1 gap-4 mb-12">
+            {/* <div className="grid grid-cols-1 gap-4 mb-12">
             <label for="name"><h1 className="text-3xl">Your user name:</h1></label>
                 <input 
                     type="text" ref={userNameValue}
@@ -76,7 +80,7 @@ const WordsForm = () => {
                     minLength="1"
                     maxlength="25"
                 />
-            </div>
+            </div> */}
 
             <div className="grid grid-cols-1 gap-4 mb-12">
                 <label for="quiz"><h1 className="text-3xl">Your quiz name:</h1></label>
