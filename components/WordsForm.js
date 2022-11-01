@@ -112,7 +112,7 @@ const WordsForm = ( {loggedInUser} ) => {
                 {error && <p className="text-xs test-red-500">All fields are required.</p>}
                 <div className="mt-8 rounded-lg w-1/3 hover:cursor-pointer">
                 <button type="button" onClick={handleSubmit} className="w-36 p-2 rounded-lg bg-cyan-700 hover:bg-cyan-800 hover:underline">Create My Quiz</button>
-                {showSuccessMessage && <span className="bg-orange-500 rounded-md background"><br/>Were working on your new quiz.</span>}
+                {showSuccessMessage && <span className="bg-orange-500 rounded-md background"><br/>Were working on your new quiz. Please give us a few minutes to get it ready.</span>}
                 </div>
             </div>
             
