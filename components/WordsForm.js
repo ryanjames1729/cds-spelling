@@ -13,9 +13,12 @@ const WordsForm = ( {loggedInUser} ) => {
     const handleSubmit = () => {
         setError(false);
 
-        const { value: wordList } = wordValue.current.trim().toLowerCase();
-        const { value: quizName } = quizNameValue.current.trim().toLowerCase();
+        const { value: wordList } = wordValue.current;
+        const { value: quizName } = quizNameValue.current;
         const userName = loggedInUser;
+
+        wordList = wordList.trim().toLowerCase();
+        quizName = quizName.trim().toLowerCase();
 
         if (!wordList || !quizName || !userName) {
             alert('Please fill out all fields');
