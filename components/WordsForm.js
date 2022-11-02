@@ -13,8 +13,8 @@ const WordsForm = ( {loggedInUser} ) => {
     const handleSubmit = () => {
         setError(false);
 
-        const { value: wordList } = wordValue.current;
-        const { value: quizName } = quizNameValue.current;
+        const { value: wordList } = wordValue.current.trim().toLowerCase();
+        const { value: quizName } = quizNameValue.current.trim().toLowerCase();
         const userName = loggedInUser;
 
         if (!wordList || !quizName || !userName) {
