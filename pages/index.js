@@ -32,7 +32,7 @@ export default function Home(props) {
   if (loggedInUser) {
     return {
       redirect: {
-        destination: '/myQuizzes', // some destination '/dashboard' Ex,
+        destination: '/myQuizzes/', // some destination '/dashboard' Ex,
         permanent: false,
       },
     }

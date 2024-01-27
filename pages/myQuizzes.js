@@ -16,6 +16,7 @@ import Link from 'next/link'
 
 
 export async function getStaticProps() {
+
     const { getQuizzes } = require("../lib/helpers")
     return {
       props: (await getQuizzes()), revalidate: 1
@@ -28,13 +29,20 @@ export default function Quiz(props) {
     const { data: session } = useSession()
     const loggedInUser = session?.user?.email.split("@")[0] || null
     let displayName = null
+    let url = '/api/'
     if (session) {
         displayName = loggedInUser[0].toUpperCase() + ". " + loggedInUser[1].toUpperCase() + loggedInUser.slice(2)
+        url = url + "?user=" + loggedInUser
+        console.log(url)
     }
 
+    
     const fetcher = (...args) => fetch(...args).then(res => res.json())
-    const { data }= useSWR('/api', fetcher, {fallbackData: props, refreshInterval: 1000})
-    let quizzes = data.quizzes
+    const { data } = useSWR(url, fetcher, {fallbackData: props, refreshInterval: 100})  
+    
+    
+    
+    let quizzes = data.quizzes;
 
     const [form, changeForm] = useState(false)
     
