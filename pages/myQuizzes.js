@@ -38,7 +38,7 @@ export default function Quiz(props) {
 
     
     const fetcher = (...args) => fetch(...args).then(res => res.json())
-    const { data } = useSWR(url, fetcher, {fallbackData: props, refreshInterval: 100})  
+    const { data } = useSWR(url, fetcher, {fallbackData: props, refreshInterval: 1000})  
     
     
     
