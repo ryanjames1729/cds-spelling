@@ -13,6 +13,7 @@ import Meta from '../components/Meta'
 import useSWR from 'swr'
 
 import { useSession, signIn, signOut } from 'next-auth/react'
+import { redirect } from 'next/dist/server/api-utils'
 
 export async function getStaticProps() {
   const { getQuizzes } = require("../lib/helpers")
@@ -47,6 +48,7 @@ export default function Home(props) {
           Welcome to <span className="text-pink-600">Spelling with CDS</span>
         </h1>
 
+        <div className="flex lg:flex-row lg:gap-x-4 flex-col items-center justify-center mt-12">
         <Link href="#">
         <div class="max-w-7xl mx-auto mt-12 hover:cursor-pointer"
           onClick={
@@ -70,6 +72,29 @@ export default function Home(props) {
              </div>
           </div>
           </Link>
+        <Link href="/demo-example">
+        <div class="max-w-7xl mx-auto mt-12 hover:cursor-pointer"
+          onClick={
+            () => { return {
+              redirect: {
+                destination: '/demo-example/', // some destination '/dashboard' Ex,
+                permanent: false,
+              },
+            }
+          }
+        }  
+        >
+          <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+              <div class="relative px-7 py-6 bg-white ring-1 ring-gray-900/5 rounded-lg leading-none flex items-top justify-start space-x-6">
+                <div class="space-y-2">
+                  <p class="text-slate-800">Want a Demo? Find out more here.</p>
+                </div>
+              </div>
+             </div>
+          </div>
+          </Link>
+          </div>
 
       </main>
 
