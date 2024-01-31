@@ -57,17 +57,19 @@ const EachQuiz = ({ quiz }) => {
                     <p className="text-gray-700 text-base">Word List: <span className="font-bold">{quiz.wordList}</span></p>
                 </div>
                 <div className="grid grid-rows-2">
-                    <div className="text-sm grid grid-cols-3 content-end">
-                        <p className="text-gray-900 leading-none">
+                    <div className="text-sm grid grid-cols-2 content-end py-2 mx-1 px-0">
+                        <div></div>
+                        <p className="text-gray-900 leading-none text-center">Student Link:</p>
+                        <p className="text-gray-900 leading-none text-center">
                             Class XP: {quiz.points}
                         </p>
-                        <div></div>
-                        <Link href="/[slug]" as={`${server}/${quiz.slug}`}><a className="text-gray-900 hover:underline">{server}/{quiz.slug}</a></Link>
+                        {/* <div></div> */}
+                        <Link href="/[slug]" as={`${server}/${quiz.slug}`}><a className="text-gray-700 hover:text-sky-700 hover:text-bold hover:text-md text-center">{server}/{quiz.slug}</a></Link>
                     </div>
-                    <div className="grid grid-cols-3 content-end">
-                        <button type="button" onClick={handleReset} className="w-18 p-2 rounded-lg bg-red-600 hover:bg-red-800 hover:underline">Reset quiz points</button>
-                        <div></div>
-                        <button type="button" onClick={handleDelete} className="w-18 p-2 rounded-lg bg-red-600 hover:bg-red-800 hover:underline">Delete this quiz</button>  
+                    <div className="grid grid-cols-2 gap-2 w-full content-end mx-auto">
+                        <button type="button" onClick={handleReset} className="w-18 p-2 rounded-lg bg-red-600 text-slate-200 hover:bg-red-800 hover:text-white hover:font-bold">Reset quiz points</button>
+                        {/* <div></div> */}
+                        <button type="button" onClick={handleDelete} className="w-18 p-2 rounded-lg bg-red-600 text-slate-200 hover:bg-red-800 hover:text-white hover:font-bold">Delete this quiz</button>  
                     </div>
                     
                     </div>
