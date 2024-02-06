@@ -99,13 +99,15 @@ export default function Quiz(props) {
       </Head>
 
       <main className={styles.quiz}>
-        <div id="correctBanner" className="hidden w-1/4 rounded-xl bg-white text-black z-10 h-10 text-2xl text-center align-middle absolute banner">
+        <div id="correctBanner" className="hidden w-1/4 rounded-xl bg-white text-black z-10 h-22 text-xl text-center align-middle absolute banner shadow-lg">
           Correct!<br/>
           🎉🎉🎉<br/>
-          Your score is: {score}
+          Your score is: <span className="text-bold">{score}</span>
         </div>
-        <div id="incorrectBanner" className="hidden w-1/4 rounded-xl bg-white text-black z-10 h-10 text-2xl text-center align-middle absolute banner">
-          Try Again!
+        <div id="incorrectBanner" className="hidden w-1/4 rounded-xl bg-white text-black z-10 h-22 text-xl text-center align-middle absolute banner shadow-lg">
+          Try Again!<br/>
+          😢😢😢<br/>
+          The correct spelling was: <span className="text-blue-800 text-bold">{word}</span>
         </div>
 
         <h1 className={styles.title}>
@@ -128,7 +130,7 @@ export default function Quiz(props) {
           <div>
             <textarea
               rows="1"
-              className="flex-auto lg:p-6 text-center border-2 w-.5 h-8 resize-none text-3xl"
+              className="flex-auto lg:p-6 text-center border-2 w-.5 h-8 resize-none text-2xl"
               value={guessedWord}
               onChange={(e) => {
                 if (e.nativeEvent.inputType === "insertLineBreak") return;
@@ -141,7 +143,7 @@ export default function Quiz(props) {
               className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"}
               onClick={() => {
                 console.log(index)
-                if (guessedWord.trim() == word.trim()) {
+                if (guessedWord.trim().toLowerCase() == word.trim().toLowerCase()) {
                   setScore(score + 10);
                   // alert("Correct!\n\nYour score is: " + (score+10));
                   setTimeout(() => {
