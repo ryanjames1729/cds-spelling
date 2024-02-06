@@ -100,7 +100,9 @@ export default function Quiz(props) {
 
       <main className={styles.quiz}>
         <div id="correctBanner" className="hidden w-1/4 rounded-xl bg-white text-black z-10 h-10 text-2xl text-center align-middle absolute banner">
-          Correct!
+          Correct!<br/>
+          🎉🎉🎉<br/>
+          Your score is: {score}
         </div>
         <div id="incorrectBanner" className="hidden w-1/4 rounded-xl bg-white text-black z-10 h-10 text-2xl text-center align-middle absolute banner">
           Try Again!
