@@ -50,7 +50,7 @@ const EachQuiz = ({ quiz }) => {
     }
 
     return (
-        <div key={quiz.id} className="w-2/3 py-6">
+        <div key={quiz.id} className="lg:w-2/3 w-full px-1 py-6">
             <div className="border-r border-b border-l border-gray-400 lg:border-t lg:border-gray-400 bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
                 <div className="mb-8 w-96">
                     <div className="text-gray-900 text-xl mb-2">Quiz Name: <span className="font-bold">{quiz.quizName}</span></div>
