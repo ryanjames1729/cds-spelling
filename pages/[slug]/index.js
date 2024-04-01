@@ -85,6 +85,11 @@ export default function Quiz(props) {
 
   const [pitch, setPitch] = React.useState(1);
   const [rate, setRate] = React.useState(1);
+  const [voiceIndex, setVoiceIndex] = React.useState(null);
+
+  const { voices } = useSpeechSynthesis();
+
+  const voice = voices[voiceIndex] || null;
 
   console.log(wordArray);
 
@@ -119,7 +124,7 @@ export default function Quiz(props) {
           <div className="p-2">
             <button onClick={() => {
                 // setWord(wordArray[index]);
-                    speak({ text: word, rate, pitch });
+                    speak({ text: word, rate, pitch, voice });
 
                 }}
                 className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"}
@@ -228,6 +233,22 @@ export default function Quiz(props) {
                   setPitch(event.target.value);
                 }}
               />
+            </div>
+            <div>
+              <label htmlFor="voice">Voice: </label>
+              <select
+                id="voice"
+                onChange={(event) => {
+                  setVoiceIndex(event.target.value);
+                }}
+              >
+                <option value={null}>Default</option>
+                {voices.map((option, index) => (
+                  option.lang.indexOf("en") > -1 ? <option key={option.voiceURI} value={index}>
+                    {option.name} - {option.lang}
+                  </option> : ''
+                ))}
+              </select>
             </div>
           
         </div>
